@@ -184,6 +184,10 @@ const CATEGORIES = [
 
 // Creative floating particles animation
 const FloatingParticles = () => {
+  // Use percentage-based positioning for SSR compatibility
+  const windowWidth = typeof window !== 'undefined' ? window.innerWidth : 1200;
+  const windowHeight = typeof window !== 'undefined' ? window.innerHeight : 800;
+  
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {Array.from({ length: 20 }).map((_, i) => (
@@ -191,8 +195,8 @@ const FloatingParticles = () => {
           key={i}
           className="absolute w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-20"
           animate={{
-            x: [Math.random() * window.innerWidth, Math.random() * window.innerWidth],
-            y: [Math.random() * window.innerHeight, Math.random() * window.innerHeight],
+            x: [Math.random() * windowWidth, Math.random() * windowWidth],
+            y: [Math.random() * windowHeight, Math.random() * windowHeight],
           }}
           transition={{
             duration: Math.random() * 10 + 20,
