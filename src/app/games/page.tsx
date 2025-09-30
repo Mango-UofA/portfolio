@@ -822,7 +822,17 @@ export default function EmbeddedArcade() {
           <div className="absolute inset-0 bg-gradient-radial from-purple-900/30 via-black to-blue-900/30"></div>
         </div>
 
-        <div className="relative z-10 flex items-center justify-center min-h-screen p-8">
+        {/* Back button */}
+        <motion.button
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          onClick={() => setSelectedGame(null)}
+          className="fixed top-20 left-8 z-50 bg-red-600/80 hover:bg-red-500 text-white px-4 py-2 rounded-lg backdrop-blur-sm border border-red-400/30 transition-all duration-300 hover:scale-105"
+        >
+          ← Back to Games
+        </motion.button>
+
+        <div className="relative z-10 flex items-center justify-center min-h-screen p-8 pt-24">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -922,7 +932,7 @@ export default function EmbeddedArcade() {
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative z-10 text-center pt-12 pb-8"
+        className="relative z-10 text-center pt-28 pb-8"
       >
         {/* Personal title with gradient */}
         <motion.h1 
