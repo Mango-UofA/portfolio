@@ -155,7 +155,7 @@ Building in the AI space taught me that technology is only as good as the proble
     tags: ["Healthcare", "Security", "HIPAA", "Compliance", "Privacy"],
     image: "/assets/blogs/healthcare.png",
     author: {
-      name: "You",
+      name: "Manglam Srivastav",
       avatar: "/assets/me.jpg",
       role: "Full Stack Developer",
       bio: "Building scalable applications with modern technologies. Passionate about AI, performance, and developer experience."
@@ -296,7 +296,7 @@ Healthcare technology has the potential to transform lives, but it must be built
     tags: ["Performance", "Optimization", "CDN", "Caching", "Streaming"],
     image: "/assets/blogs/music.png",
     author: {
-      name: "You",
+      name: "Manglam Srivastav",
       avatar: "/assets/me.jpg",
       role: "Full Stack Developer",
       bio: "Building scalable applications with modern technologies. Passionate about AI, performance, and developer experience."

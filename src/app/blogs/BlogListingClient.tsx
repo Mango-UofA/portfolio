@@ -15,7 +15,7 @@ const blogPosts = [
     readTime: "12 min read",
     tags: ["AI", "WebRTC", "Next.js", "Scaling", "Startup"],
     featured: true,
-    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=400&fit=crop&crop=center&auto=format&q=80",
+    image: "/assets/blogs/interview.png",
     author: {
       name: "Manglam Srivastav",
       avatar: "/assets/me.jpg",
@@ -32,7 +32,7 @@ const blogPosts = [
     readTime: "10 min read",
     tags: ["Healthcare", "Security", "HIPAA", "Compliance", "Privacy"],
     featured: true,
-    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=400&fit=crop&crop=center&auto=format&q=80",
+    image: "/assets/blogs/healthcare.png",
     author: {
       name: "Manglam Srivastav",
       avatar: "/assets/me.jpg",
@@ -49,7 +49,7 @@ const blogPosts = [
     readTime: "8 min read",
     tags: ["Performance", "Optimization", "CDN", "Caching", "Streaming"],
     featured: false,
-    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=400&fit=crop&crop=center&auto=format&q=80",
+    image: "/assets/blogs/music.png",
     author: {
       name: "Manglam Srivastav",
       avatar: "/assets/me.jpg",
@@ -66,7 +66,7 @@ const blogPosts = [
     readTime: "9 min read",
     tags: ["TypeScript", "Advanced Types", "Developer Experience", "Best Practices"],
     featured: false,
-    image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&h=400&fit=crop&crop=center&auto=format&q=80",
+    image: "/assets/blogs/code.png",
     author: {
       name: "Manglam Srivastav",
       avatar: "/assets/me.jpg",
@@ -83,7 +83,7 @@ const blogPosts = [
     readTime: "11 min read",
     tags: ["Platform", "Real-time", "Microservices", "Scaling", "Architecture"],
     featured: false,
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=400&fit=crop&crop=center&auto=format&q=80",
+    image: "/assets/blogs/delivery.png",
     author: {
       name: "Manglam Srivastav",
       avatar: "/assets/me.jpg",
@@ -100,7 +100,7 @@ const blogPosts = [
     readTime: "10 min read",
     tags: ["Machine Learning", "OCR", "Document Processing", "AI", "NLP"],
     featured: false,
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=400&fit=crop&crop=center&auto=format&q=80",
+    image: "/assets/blogs/ai.png",
     author: {
       name: "Manglam Srivastav",
       avatar: "/assets/me.jpg",
