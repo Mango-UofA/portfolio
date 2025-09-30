@@ -16,28 +16,34 @@ const RemoteCursors = () => {
   const { x, y } = useMouse({ allowPage: true });
   useEffect(() => {
     if (typeof window === "undefined" || !socket || isMobile) return;
-    socket.on("cursor-changed", (data) => {
+    
+    // Type assertion to handle socket.io-client type issues
+    const typedSocket = socket as any;
+    
+    typedSocket.on("cursor-changed", (data: Partial<User>) => {
       setUsers((prev: UserMap) => {
         const newMap = new Map(prev);
-        if (!prev.has(data.socketId)) {
-          newMap.set(data.socketId, {
+        if (!prev.has(data.socketId!)) {
+          newMap.set(data.socketId!, {
             ...data,
-          });
+          } as User);
         } else {
-          newMap.set(data.socketId, { ...prev.get(data.socketId), ...data });
+          newMap.set(data.socketId!, { ...prev.get(data.socketId!), ...data } as User);
         }
         return newMap;
       });
     });
-    socket.on("users-updated", (data: User[]) => {
+    
+    typedSocket.on("users-updated", (data: User[]) => {
       const newMap = new Map();
       data.forEach((user) => {
         newMap.set(user.socketId, { ...user });
       });
       setUsers(newMap);
     });
+    
     return () => {
-      socket.off("cursor-changed");
+      typedSocket.off("cursor-changed");
     };
   }, [socket, isMobile]);
   const handleMouseMove = useThrottle((x, y) => {

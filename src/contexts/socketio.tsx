@@ -7,8 +7,9 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { io, Socket } from "socket.io-client";
-import { generateRandomCursor } from "../lib/generate-random-cursor"
+import { io } from "socket.io-client";
+import type { Socket } from "socket.io-client";
+import { generateRandomCursor } from "../lib/generate-random-cursor";
 
 export type User = {
   socketId: string;
@@ -21,6 +22,7 @@ export type User = {
   location: string;
   flag: string;
 };
+
 export type Message = {
   socketId: string;
   content: string;
@@ -60,20 +62,28 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
-    const username =  localStorage.getItem("username") || generateRandomCursor().name
-    const socket = io(wsUrl, {
+    const username = (typeof window !== 'undefined' ? localStorage.getItem("username") : null) || generateRandomCursor().name;
+    const socketInstance = io(wsUrl, {
       query: { username },
     });
-    setSocket(socket);
-    socket.on("connect", () => {});
-    socket.on("msgs-receive-init", (msgs) => {
+    setSocket(socketInstance);
+    
+    // Type assertion to handle socket.io-client type issues
+    const typedSocket = socketInstance as any;
+    
+    typedSocket.on("connect", () => {
+      console.log("Connected to socket server");
+    });
+    
+    typedSocket.on("msgs-receive-init", (msgs: Message[]) => {
       setMsgs(msgs);
     });
-    socket.on("msg-receive", (msgs) => {
-      setMsgs((p) => [...p, msgs]);
+    
+    typedSocket.on("msg-receive", (msg: Message) => {
+      setMsgs((prev) => [...prev, msg]);
     });
     return () => {
-      socket.disconnect();
+      socketInstance.disconnect();
     };
   }, []);
 

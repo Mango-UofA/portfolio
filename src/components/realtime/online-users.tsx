@@ -84,7 +84,7 @@ const OnlineUsers = () => {
         <Tabs
           defaultValue="account"
           className="w-full h-[30rem] flex flex-col items-center no-hover-zone"
-          onValueChange={(activeTab) => {
+          onValueChange={(activeTab: string) => {
             if (activeTab === "chat") containerScrollBottom();
           }}
         >
