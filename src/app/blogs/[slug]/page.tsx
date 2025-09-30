@@ -34,7 +34,7 @@ const blogPosts: Record<string, {
     date: "September 10, 2024",
     readTime: "12 min read",
     tags: ["AI", "WebRTC", "Next.js", "Scaling", "Startup"],
-    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&h=600&fit=crop&crop=center&auto=format&q=80",
+    image: "/assets/blogs/interview.png",
     author: {
       name: "Manglam Srivastav",
       avatar: "/assets/me.jpg",
@@ -153,7 +153,7 @@ Building in the AI space taught me that technology is only as good as the proble
     date: "September 8, 2024",
     readTime: "10 min read",
     tags: ["Healthcare", "Security", "HIPAA", "Compliance", "Privacy"],
-    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1200&h=600&fit=crop&crop=center&auto=format&q=80",
+    image: "/assets/blogs/healthcare.png",
     author: {
       name: "You",
       avatar: "/assets/me.jpg",
@@ -294,7 +294,7 @@ Healthcare technology has the potential to transform lives, but it must be built
     date: "September 5, 2024",
     readTime: "8 min read",
     tags: ["Performance", "Optimization", "CDN", "Caching", "Streaming"],
-    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1200&h=600&fit=crop&crop=center&auto=format&q=80",
+    image: "/assets/blogs/music.png",
     author: {
       name: "You",
       avatar: "/assets/me.jpg",
@@ -437,7 +437,7 @@ The streaming landscape continues evolving, with new audio formats, better compr
     date: "September 2, 2024",
     readTime: "9 min read",
     tags: ["TypeScript", "Advanced Types", "Developer Experience", "Best Practices"],
-    image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1200&h=600&fit=crop&crop=center&auto=format&q=80",
+    image: "/assets/blogs/code.png",
     author: {
       name: "You",
       avatar: "/assets/me.jpg",
@@ -630,7 +630,7 @@ The key is applying these patterns judiciously—using the right tool for the jo
     date: "August 30, 2024",
     readTime: "11 min read",
     tags: ["Platform", "Real-time", "Microservices", "Scaling", "Architecture"],
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=600&fit=crop&crop=center&auto=format&q=80",
+    image: "/assets/blogs/delivery.png",
     author: {
       name: "You",
       avatar: "/assets/me.jpg",
@@ -839,7 +839,7 @@ Building a solid architectural foundation that can adapt to these changes while 
     date: "August 27, 2024",
     readTime: "10 min read",
     tags: ["Machine Learning", "OCR", "Document Processing", "AI", "NLP"],
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=600&fit=crop&crop=center&auto=format&q=80",
+    image: "/assets/blogs/ai.png",
     author: {
       name: "You",
       avatar: "/assets/me.jpg",
