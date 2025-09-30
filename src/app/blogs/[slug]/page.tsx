@@ -1032,9 +1032,9 @@ Success in this field requires understanding both the technical capabilities of 
 };
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateStaticParams() {
