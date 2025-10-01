@@ -7,8 +7,9 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/api/', '/admin/'],
+        disallow: ['/api/', '/admin/', '/_next/', '/.well-known/'],
       },
+      // Block AI crawlers and bots
       {
         userAgent: 'GPTBot',
         disallow: '/',
@@ -27,6 +28,27 @@ export default function robots(): MetadataRoute.Robots {
       },
       {
         userAgent: 'Claude-Web',
+        disallow: '/',
+      },
+      {
+        userAgent: 'FacebookBot',
+        disallow: '/',
+      },
+      {
+        userAgent: 'facebookexternalhit',
+        disallow: '/',
+      },
+      // Block common SEO crawler bots
+      {
+        userAgent: 'SemrushBot',
+        disallow: '/',
+      },
+      {
+        userAgent: 'AhrefsBot',
+        disallow: '/',
+      },
+      {
+        userAgent: 'MJ12bot',
         disallow: '/',
       },
     ],

@@ -70,8 +70,9 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  manifest: "/manifest.json",
   verification: {
-    google: "google-site-verification-code", // Add your Google verification code
+    // google: "your-google-verification-code", // Uncomment and add your Google Search Console verification code
   },
   category: "technology",
 };
@@ -89,6 +90,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={[archivoBlack.className].join(" ")} suppressHydrationWarning>
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#3b82f6" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <link rel="apple-touch-icon" href="/assets/seo/icon-192.png" />
         <Script
           defer
           src={process.env.UMAMI_DOMAIN}
@@ -128,9 +134,8 @@ export default function RootLayout({
                     "API Development"
                   ],
                   sameAs: [
-                    "https://github.com/manglam",
-                    "https://linkedin.com/in/manglam",
-                    "https://twitter.com/manglamsriv"
+                    "https://github.com/Mango-UofA",
+                    "https://linkedin.com/in/manglam-srivastav",
                   ]
                 },
                 {

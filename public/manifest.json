@@ -1,0 +1,28 @@
+{
+  "name": "Manglam Srivastav - Full-Stack Developer Portfolio",
+  "short_name": "Manglam Portfolio",
+  "description": "Full-stack developer building modern web applications with React, Next.js, Node.js, and cloud technologies.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/assets/seo/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/seo/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["developer", "portfolio", "web development", "full-stack"],
+  "lang": "en-US"
+}
