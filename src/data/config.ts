@@ -59,7 +59,7 @@ const config = {
   ],
   author: "Manglam Srivastav",
   email: "manglam.srivastav@arizona.edu",
-  site: "https://manglam-portfolio.vercel.app",
+  site: "https://manglamsrivastav.me",
 
   get ogImg() {
     return this.site + "/assets/seo/og-image.png";

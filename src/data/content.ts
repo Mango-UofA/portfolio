@@ -48,7 +48,7 @@ export const content = {
         title: "Manglam Srivastav — AI/ML Engineer",
         description: "I build AI products end-to-end — from data to delightful UX.",
         image: "/assets/og-cover.png",
-        url: "https://manglam-portfolio.vercel.app",
+        url: "https://manglamsrivastav.me",
         type: "website"
       }
     }
