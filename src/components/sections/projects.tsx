@@ -17,28 +17,31 @@ import { cn } from "@/lib/utils";
 
 const ProjectsSection = () => {
   return (
-    <section id="projects" className="max-w-7xl mx-auto md:h-[130vh]">
+    <section id="projects" className="max-w-7xl mx-auto min-h-screen py-20 px-4 md:px-6">
       <Link href={"#projects"}>
         <h2
           className={cn(
-            "bg-clip-text text-4xl text-center text-transparent md:text-7xl pt-16",
+            "bg-clip-text text-4xl text-center text-transparent md:text-7xl pt-8 pb-4",
             "bg-gradient-to-b from-black/80 to-black/50",
-            "dark:bg-gradient-to-b dark:from-white/80 dark:to-white/20 dark:bg-opacity-50 mb-32"
+            "dark:bg-gradient-to-b dark:from-white/90 dark:to-white/40 font-bold tracking-tight"
           )}
         >
-          Projects
+          Featured Projects
         </h2>
       </Link>
-      <div className="grid grid-cols-1 md:grid-cols-3">
+      <p className="text-center text-zinc-400 dark:text-zinc-500 max-w-2xl mx-auto mb-16 text-lg">
+        A showcase of my recent work in full-stack development, featuring modern web applications built with cutting-edge technologies.
+      </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-10">
         {projects.map((project, index) => (
-          <Modall key={`${project.title}-${index}`} project={project} />
+          <Modall key={`${project.title}-${index}`} project={project} index={index} />
         ))}
       </div>
     </section>
   );
 };
 
-const Modall = ({ project }: { project: Project }) => {
+const Modall = ({ project, index }: { project: Project; index: number }) => {
   return (
     <div className="flex items-center justify-center">
       <Modal>
@@ -47,21 +50,21 @@ const Modall = ({ project }: { project: Project }) => {
             className="relative w-[400px] h-auto rounded-lg overflow-hidden"
             style={{ aspectRatio: "3/2" }}
           >
-            <div className="absolute w-full h-full top-0 left-0 hover:scale-[1.02] transition-transform duration-300 ease-in-out bg-gradient-to-br from-blue-900/20 to-purple-900/20 border border-zinc-700 rounded-lg flex items-center justify-center">
+            <div className="absolute w-full h-full top-0 left-0 hover:scale-[1.02] transition-transform duration-300 ease-in-out bg-gradient-to-br from-zinc-800/90 via-zinc-700/90 to-zinc-800/90 backdrop-blur-sm border border-zinc-600 rounded-lg flex items-center justify-center shadow-xl">
               <div className="text-center p-8">
                 <h3 className="text-xl font-bold text-white mb-4">{project.title}</h3>
-                <p className="text-sm text-zinc-300 mb-4">{project.year}</p>
+                <p className="text-sm text-zinc-100 mb-4">{project.year}</p>
                 <div className="flex flex-wrap gap-2 justify-center">
                   {project.skills.slice(0, 4).map((skill) => (
                     <span
                       key={skill}
-                      className="px-2 py-1 bg-zinc-800 text-xs rounded-full text-zinc-300"
+                      className="px-3 py-1.5 bg-zinc-800/70 backdrop-blur-sm border border-zinc-600/50 text-xs font-medium rounded-full text-zinc-200 hover:bg-zinc-700/70 transition-colors duration-200"
                     >
                       {PROJECT_SKILLS[skill].title}
                     </span>
                   ))}
                   {project.skills.length > 4 && (
-                    <span className="px-2 py-1 bg-zinc-800 text-xs rounded-full text-zinc-300">
+                    <span className="px-3 py-1.5 bg-zinc-700/80 backdrop-blur-sm border border-zinc-500/50 text-xs font-medium rounded-full text-zinc-300">
                       +{project.skills.length - 4} more
                     </span>
                   )}
@@ -70,7 +73,7 @@ const Modall = ({ project }: { project: Project }) => {
             </div>
           </div>
         </ModalTrigger>
-        <ModalBody className="md:max-w-4xl md:max-h-[80%] overflow-auto">
+                <ModalBody className="md:max-w-4xl md:max-h-[80%] overflow-auto">
           <SmoothScroll isInsideModal={true}>
             <ModalContent>
               <ProjectContents project={project} />

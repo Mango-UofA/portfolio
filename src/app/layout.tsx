@@ -75,6 +75,13 @@ export const metadata: Metadata = {
     // google: "your-google-verification-code", // Uncomment and add your Google Search Console verification code
   },
   category: "technology",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48", type: "image/x-icon" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
 };
 
 const archivoBlack = Archivo_Black({
@@ -92,9 +99,16 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#3b82f6" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <link rel="apple-touch-icon" href="/assets/seo/icon-192.png" />
+        
+        {/* Favicon and Icons for Google Search Results */}
+        <link rel="icon" href="/favicon.ico" sizes="48x48" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon-precomposed" href="/favicon.ico" />
         <Script
           defer
           src={process.env.UMAMI_DOMAIN}
@@ -184,9 +198,13 @@ export default function RootLayout({
             <SocketContextProvider>
               <RemoteCursors />
               <TooltipProvider>
-                <Header />
-                {children}
-                <Footer />
+                <div className="min-h-screen flex flex-col">
+                  <Header />
+                  <main className="flex-1">
+                    {children}
+                  </main>
+                  <Footer />
+                </div>
               </TooltipProvider>
             </SocketContextProvider>
             <Toaster />

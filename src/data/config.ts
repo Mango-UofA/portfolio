@@ -6,7 +6,20 @@ const config = {
       "Full-stack developer building modern web applications with React, Next.js, Node.js, and cloud technologies.",
   },
   keywords: [
+    // Correct name
     "Manglam Srivastav",
+    // Common misspellings for SEO coverage
+    "Mangalam Srivastav",
+    "Mangalam Srivastava", 
+    "Manglam Srivastava",
+    "Manglam Shrivastava",
+    "Mangalam Shrivastava",
+    "Manglam Srivastav",
+    "Mangalam Shrivastav",
+    "Manglam Shreevastav",
+    "Mangalam Shreevastav",
+    "Manglam Srivashtav",
+    "Mangalam Srivashtav",
     "full-stack developer",
     "software engineer",
     "web developer",

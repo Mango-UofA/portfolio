@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
@@ -184,28 +184,53 @@ const CATEGORIES = [
 
 // Creative floating particles animation
 const FloatingParticles = () => {
-  // Use percentage-based positioning for SSR compatibility
-  const windowWidth = typeof window !== 'undefined' ? window.innerWidth : 1200;
-  const windowHeight = typeof window !== 'undefined' ? window.innerHeight : 800;
+  const [particles, setParticles] = useState<Array<{
+    id: number;
+    left: number;
+    top: number;
+    animateX: [number, number];
+    animateY: [number, number];
+    duration: number;
+  }>>([]);
+  const [isClient, setIsClient] = useState(false);
+  
+  useEffect(() => {
+    setIsClient(true);
+    // Generate particles only on client side to avoid hydration mismatch
+    const newParticles = Array.from({ length: 20 }).map((_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      animateX: [Math.random() * 100, Math.random() * 100] as [number, number],
+      animateY: [Math.random() * 100, Math.random() * 100] as [number, number],
+      duration: Math.random() * 10 + 20,
+    }));
+    setParticles(newParticles);
+  }, []);
+  
+  if (!isClient) {
+    return <div className="absolute inset-0 overflow-hidden pointer-events-none" />;
+  }
   
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {Array.from({ length: 20 }).map((_, i) => (
+      {particles.map((particle) => (
         <motion.div
-          key={i}
+          key={particle.id}
           className="absolute w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-20"
           animate={{
-            x: [Math.random() * windowWidth, Math.random() * windowWidth],
-            y: [Math.random() * windowHeight, Math.random() * windowHeight],
+            x: [`${particle.animateX[0]}vw`, `${particle.animateX[1]}vw`],
+            y: [`${particle.animateY[0]}vh`, `${particle.animateY[1]}vh`],
           }}
           transition={{
-            duration: Math.random() * 10 + 20,
+            duration: particle.duration,
             repeat: Infinity,
             ease: "linear"
           }}
           style={{
-            left: Math.random() * 100 + '%',
-            top: Math.random() * 100 + '%',
+            left: particle.left + '%',
+            top: particle.top + '%',
+            willChange: 'transform',
           }}
         />
       ))}

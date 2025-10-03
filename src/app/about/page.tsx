@@ -229,50 +229,55 @@ const TOOLS = [
 
 function Page() {
   const [toolsLoaded, setToolsLoaded] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  
   useEffect(() => {
+    setIsClient(true);
     setToolsLoaded(true);
   }, []);
   return (
-    <div className="container mx-auto px-4 md:px-[50px] xl:px-[200px] text-zinc-300 pt-20 pb-20">
-      <div className="flex flex-col lg:flex-row gap-5">
-        <aside className="w-full md:basis-1/4">
-          <div
-            className="p-4 md:p-8 lg:p-10 rounded-2xl border-[.5px] border-zinc-600"
-            style={{
-              backdropFilter: "blur(2px)",
-            }}
-          >
+    <div className="min-h-screen w-full flex items-center justify-center">
+      <div className="container mx-auto px-4 md:px-6 lg:px-8 xl:px-16 text-zinc-700 dark:text-zinc-300 py-20 max-w-7xl">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 justify-center items-start">
+          <aside className="w-full lg:w-96 lg:flex-shrink-0">
+            <div
+              className="p-4 md:p-6 lg:p-10 rounded-2xl border-[.5px] border-zinc-300 dark:border-zinc-600 bg-white/50 dark:bg-transparent w-full"
+              style={{
+                backdropFilter: "blur(2px)",
+              }}
+            >
             <div className="flex flex-row lg:flex-col items-center">
-              <div className="flex justify-center items-center lg:w-full lg:aspect-square bg-zinc-800 rounded-xl lg:mb-5 overflow-hidden">
+              <div className="flex justify-center items-center lg:w-full lg:aspect-square bg-zinc-200 dark:bg-zinc-800 rounded-xl lg:mb-5 overflow-hidden">
                 <img
-                  className="rounded-xl w-[100px] md:w-[150px] lg:w-full aspect-square object-cover"
+                  className="rounded-xl w-[120px] md:w-[180px] lg:w-full aspect-square object-cover"
                   alt="me"
                   src="/assets/me.jpg"
                 />
               </div>
-              <div className="flex flex-col gap-3 lg:items-center ml-10 md:ml-20 lg:ml-0">
-                <p className="text-center text-xl">Manglam Srivastav</p>
-                <div className="text-xs bg-zinc-700 w-fit px-3 py-1 rounded-full">
+              <div className="flex flex-col gap-4 lg:items-center ml-6 md:ml-8 lg:ml-0">
+                <p className="lg:text-center text-xl lg:text-2xl font-medium">Manglam Srivastav</p>
+                <div className="text-xs bg-zinc-300 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 w-fit px-3 py-1 rounded-full">
                   Full-Stack Developer
                 </div>
-                <div className="text-xs bg-blue-900/50 w-fit px-3 py-1 rounded-full">
+                <div className="text-xs bg-blue-200 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 w-fit px-3 py-1 rounded-full">
                   MS Information Science
                 </div>
               </div>
             </div>
             <div className="hidden lg:block">
-              <hr className="my-10 border-zinc-600" />
+              <hr className="my-10 border-zinc-300 dark:border-zinc-600" />
               <ul className="flex flex-col gap-3">
                 {CONTACT_LINKS.map((link) => (
                   <li key={link.name}>
                     <a
-                      className="flex items-center px-3 gap-3 w-full h-12 border-zinc-700 bg-zinc-800 hover:border-zinc-600 border-[.5px] rounded-md "
+                      className="flex items-center px-3 gap-3 w-full h-12 border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 border-[.5px] rounded-md "
                       href={link.href}
+                      {...(link.name === "LinkedIn" || link.name === "GitHub" ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                     >
                       <div className="w-8">{link.icon}</div>
                       <div className="flex flex-col">
                         <div className="text-sm">{link.name}</div>
-                        <div className="text-xs text-zinc-500">
+                        <div className="text-xs text-zinc-600 dark:text-zinc-500">
                           {link.content}
                         </div>
                       </div>
@@ -282,29 +287,53 @@ function Page() {
               </ul>
             </div>
           </div>
-        </aside>
-        <main className="basis-3/4 w-[500px]">
-          <div
-            className="p-10 border-[.5px] rounded-md border-zinc-600"
-            style={{ backdropFilter: "blur(2px)" }}
-          >
-            <h1 className="text-3xl mb-10 lg:md-20">About me</h1>
-            <p className="mb-6 text-roboto leading-relaxed">
-              Hey there! I'm <span className="text-blue-400 font-semibold">Manglam Srivastav</span>, a Full-Stack Software Developer with over two years of professional experience building scalable, cloud-native applications. My expertise lies in the <span className="text-green-400">MERN stack</span> (MongoDB, Express.js, React.js, Node.js) and SQL databases (PostgreSQL, MySQL), combined with strong skills in AWS services, REST API design, and CI/CD workflows.
+          
+          {/* Mobile Contact Links */}
+          <div className="lg:hidden mt-4">
+            <div className="p-4 md:p-6 rounded-2xl border-[.5px] border-zinc-300 dark:border-zinc-600 bg-white/50 dark:bg-transparent" style={{ backdropFilter: "blur(2px)" }}>
+              <h3 className="text-sm font-semibold mb-3 text-zinc-700 dark:text-zinc-300">Contact</h3>
+              <div className="grid grid-cols-2 gap-2">
+                {CONTACT_LINKS.map((link) => (
+                  <a
+                    key={link.name}
+                    className="flex items-center justify-center p-3 border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 border-[.5px] rounded-md text-center"
+                    href={link.href}
+                    {...(link.name === "LinkedIn" || link.name === "GitHub" ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  >
+                    <div className="flex flex-col items-center gap-1">
+                      <div className="w-5 h-5 flex items-center justify-center">
+                        {React.cloneElement(link.icon as React.ReactElement, { height: "20px", width: "20px" })}
+                      </div>
+                      <div className="text-xs">{link.name}</div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+          </aside>
+          <main className="flex-1 w-full lg:max-w-4xl">
+            <div
+              className="p-4 md:p-6 lg:p-10 xl:p-12 border-[.5px] rounded-md border-zinc-300 dark:border-zinc-600 bg-white/50 dark:bg-transparent w-full"
+              style={{ backdropFilter: "blur(2px)" }}
+            >
+            <h1 className="text-2xl md:text-3xl mb-6 md:mb-10 lg:mb-20">About me</h1>
+            <p className="mb-4 md:mb-6 text-sm md:text-base text-roboto leading-relaxed">
+              Hey there! I'm <span className="text-blue-600 dark:text-blue-400 font-semibold">Manglam Srivastav</span>, a Full-Stack Software Developer with over two years of professional experience building scalable, cloud-native applications. My expertise lies in the <span className="text-green-600 dark:text-green-400">MERN stack</span> (MongoDB, Express.js, React.js, Node.js) and SQL databases (PostgreSQL, MySQL), combined with strong skills in AWS services, REST API design, and CI/CD workflows.
             </p>
-            <p className="mb-6 leading-relaxed">
-              I enjoy building end-to-end solutions—from designing sleek, responsive frontends in <span className="text-cyan-400">React.js & Tailwind CSS</span> to architecting robust backend systems in <span className="text-yellow-400">Node.js/Express</span>. I've deployed applications on AWS EC2, Lightsail, and S3, optimized APIs for performance, and integrated third-party services for real-world use cases.
+            <p className="mb-4 md:mb-6 text-sm md:text-base leading-relaxed">
+              I enjoy building end-to-end solutions—from designing sleek, responsive frontends in <span className="text-cyan-600 dark:text-cyan-400">React.js & Tailwind CSS</span> to architecting robust backend systems in <span className="text-yellow-600 dark:text-yellow-400">Node.js/Express</span>. I've deployed applications on AWS EC2, Lightsail, and S3, optimized APIs for performance, and integrated third-party services for real-world use cases.
             </p>
-            <p className="mb-6 leading-relaxed">
-              Currently, I'm pursuing my <span className="text-purple-400 font-semibold">Master's in Information Science</span> with a focus on Machine Learning at the University of Arizona, which complements my development work by bringing data-driven insights and intelligent features into the products I build.
+            <p className="mb-4 md:mb-6 text-sm md:text-base leading-relaxed">
+              Currently, I'm pursuing my <span className="text-purple-600 dark:text-purple-400 font-semibold">Master's in Information Science</span> with a focus on Machine Learning at the University of Arizona, which complements my development work by bringing data-driven insights and intelligent features into the products I build.
             </p>
-            <p className="mb-8 leading-relaxed">
-              Throughout my career, I've contributed to projects spanning <span className="text-orange-400">logistics and supply chain management</span> as well as <span className="text-pink-400">enterprise automation and AI-driven solutions</span>. These experiences have strengthened my ability to deliver scalable, production-ready applications that address real-world business challenges and enhance user experiences across diverse industries.
+            <p className="mb-6 md:mb-8 text-sm md:text-base leading-relaxed">
+              Throughout my career, I've contributed to projects spanning <span className="text-orange-600 dark:text-orange-400">logistics and supply chain management</span> as well as <span className="text-pink-600 dark:text-pink-400">enterprise automation and AI-driven solutions</span>. These experiences have strengthened my ability to deliver scalable, production-ready applications that address real-world business challenges and enhance user experiences across diverse industries.
             </p>
             
-            <div className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 p-6 rounded-lg border border-zinc-700 mb-10">
-              <h3 className="text-lg font-semibold mb-3 text-blue-300">🎯 What I'm passionate about:</h3>
-              <ul className="space-y-2 text-sm">
+            <div className="bg-gradient-to-r from-blue-200/30 to-purple-200/30 dark:from-blue-900/20 dark:to-purple-900/20 p-4 md:p-6 rounded-lg border border-zinc-300 dark:border-zinc-700 mb-6 md:mb-10">
+              <h3 className="text-base md:text-lg font-semibold mb-2 md:mb-3 text-blue-600 dark:text-blue-300">🎯 What I'm passionate about:</h3>
+              <ul className="space-y-1 md:space-y-2 text-xs md:text-sm">
                 <li>• Building products that are not just functional but also impactful</li>
                 <li>• Creating scalable backends and responsive UIs that users love</li>
                 <li>• Exploring the intersection of software development and machine learning</li>
@@ -312,24 +341,26 @@ function Page() {
               </ul>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6 mb-10">
-              <div className="bg-zinc-800/50 p-5 rounded-lg border border-zinc-700">
-                <h3 className="text-lg font-semibold mb-3 text-green-300">💼 Professional Experience</h3>
-                <p className="text-sm text-zinc-300">2+ years in full-stack development</p>
-                <p className="text-sm text-zinc-300">MERN stack specialist</p>
-                <p className="text-sm text-zinc-300">AWS cloud deployment expert</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-10">
+              <div className="bg-zinc-100/80 dark:bg-zinc-800/50 p-4 md:p-5 rounded-lg border border-zinc-300 dark:border-zinc-700">
+                <h3 className="text-base md:text-lg font-semibold mb-2 md:mb-3 text-green-600 dark:text-green-300">💼 Professional Experience</h3>
+                <p className="text-xs md:text-sm text-zinc-700 dark:text-zinc-300">2+ years in full-stack development</p>
+                <p className="text-xs md:text-sm text-zinc-700 dark:text-zinc-300">MERN stack specialist</p>
+                <p className="text-xs md:text-sm text-zinc-700 dark:text-zinc-300">AWS cloud deployment expert</p>
               </div>
-              <div className="bg-zinc-800/50 p-5 rounded-lg border border-zinc-700">
-                <h3 className="text-lg font-semibold mb-3 text-purple-300">🎓 Education</h3>
-                <p className="text-sm text-zinc-300">MS Information Science (ML Focus)</p>
-                <p className="text-sm text-zinc-300">University of Arizona</p>
-                <p className="text-sm text-zinc-300">GPA: 4.0</p>
+              <div className="bg-zinc-100/80 dark:bg-zinc-800/50 p-4 md:p-5 rounded-lg border border-zinc-300 dark:border-zinc-700">
+                <h3 className="text-base md:text-lg font-semibold mb-2 md:mb-3 text-purple-600 dark:text-purple-300">🎓 Education</h3>
+                <p className="text-xs md:text-sm text-zinc-700 dark:text-zinc-300">MS Information Science (ML Focus)</p>
+                <p className="text-xs md:text-sm text-zinc-700 dark:text-zinc-300">University of Arizona</p>
+                <p className="text-xs md:text-sm text-zinc-700 dark:text-zinc-300">GPA: 4.0</p>
               </div>
             </div>
-            <h1 className="text-3xl mb-10 lg:md-20">Stuff I use</h1>
-            <div className="mb-5">
-              {!toolsLoaded ? (
-                <p className="h-[100px]"></p>
+            <h1 className="text-2xl md:text-3xl mb-6 md:mb-10 lg:mb-20">Stuff I use</h1>
+            <div className="mb-5" suppressHydrationWarning={true}>
+              {!isClient || !toolsLoaded ? (
+                <div className="h-[100px] flex items-center justify-center">
+                  <div className="text-sm text-zinc-500 dark:text-zinc-400">Loading technologies...</div>
+                </div>
               ) : (
                 <Splide
                   options={{
@@ -343,14 +374,25 @@ function Page() {
                     rewind: true,
                     easing: "cubic-bezier(0.25, 1, 0.5, 1)",
                     arrows: false,
+                    breakpoints: {
+                      640: {
+                        perPage: 2,
+                      },
+                      768: {
+                        perPage: 3,
+                      },
+                      1024: {
+                        perPage: 4,
+                      },
+                    },
                   }}
-                  aria-label="My Favorite Images"
+                  aria-label="My Favorite Technologies"
                 >
                   {TOOLS.reverse().map((tool) => (
                     <SplideSlide key={tool.name}>
                       <div
                         key={tool.name}
-                        className="w-fit p-2 border-[.5px] border-zinc-600 rounded-md"
+                        className="w-fit p-2 border-[.5px] border-zinc-300 dark:border-zinc-600 bg-zinc-50 dark:bg-transparent rounded-md"
                       >
                         {tool.icon}
                       </div>
@@ -387,8 +429,9 @@ function Page() {
                 ))}
               </Splide>
             </div> */}
-          </div>
-        </main>
+            </div>
+          </main>
+        </div>
       </div>
     </div>
   );

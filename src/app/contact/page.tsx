@@ -33,8 +33,8 @@ function Page() {
   };
 
   return (
-    <section>
-      <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
+    <section className="flex items-center justify-center min-h-[calc(100vh-200px)]">
+      <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md w-full">
         <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center text-zinc-200">
           Contact Me
         </h2>

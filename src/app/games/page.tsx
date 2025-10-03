@@ -156,15 +156,19 @@ const SnakeGame = ({ onClose }: { onClose: () => void }) => {
 
       switch (e.key) {
         case 'ArrowUp':
+          e.preventDefault(); // Prevent page scroll
           if (gameRef.current.direction.y === 0) gameRef.current.direction = { x: 0, y: -1 };
           break;
         case 'ArrowDown':
+          e.preventDefault(); // Prevent page scroll
           if (gameRef.current.direction.y === 0) gameRef.current.direction = { x: 0, y: 1 };
           break;
         case 'ArrowLeft':
+          e.preventDefault(); // Prevent page scroll
           if (gameRef.current.direction.x === 0) gameRef.current.direction = { x: -1, y: 0 };
           break;
         case 'ArrowRight':
+          e.preventDefault(); // Prevent page scroll
           if (gameRef.current.direction.x === 0) gameRef.current.direction = { x: 1, y: 0 };
           break;
       }
@@ -182,24 +186,25 @@ const SnakeGame = ({ onClose }: { onClose: () => void }) => {
   }, [gameStarted, drawGame]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[500px] bg-black/90 rounded-lg p-6">
+    <div className="flex flex-col items-center justify-center min-h-[400px] sm:min-h-[500px] bg-black/90 rounded-lg p-4 sm:p-6 w-full max-w-2xl mx-auto">
       <div className="mb-4 text-center">
-        <h3 className="text-2xl font-bold text-green-400 mb-2">🐍 SNAKE LEGEND</h3>
-        <p className="text-white/80">Score: {score}</p>
+        <h3 className="text-xl sm:text-2xl font-bold text-green-400 mb-2">🐍 SNAKE LEGEND</h3>
+        <p className="text-white/80 text-sm sm:text-base">Score: {score}</p>
       </div>
 
       <canvas
         ref={canvasRef}
         width={400}
         height={400}
-        className="border-2 border-green-400 rounded-lg mb-4"
+        className="border-2 border-green-400 rounded-lg mb-4 w-full max-w-sm sm:max-w-md h-auto"
+        style={{ aspectRatio: '1/1', maxWidth: '400px', width: '100%' }}
       />
 
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-xs sm:max-w-none">
         {!gameStarted || gameOver ? (
           <button
             onClick={startGame}
-            className="px-6 py-3 bg-green-500 hover:bg-green-400 text-white font-bold rounded-lg transition-all duration-300"
+            className="px-4 sm:px-6 py-3 bg-green-500 hover:bg-green-400 text-white font-bold rounded-lg transition-all duration-300 text-sm sm:text-base w-full sm:w-auto"
           >
             {gameOver ? 'PLAY AGAIN' : 'START GAME'}
           </button>
@@ -207,14 +212,42 @@ const SnakeGame = ({ onClose }: { onClose: () => void }) => {
         
         <button
           onClick={onClose}
-          className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg transition-all duration-300"
+          className="px-4 sm:px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg transition-all duration-300 text-sm sm:text-base w-full sm:w-auto"
         >
           BACK TO ARCADE
         </button>
       </div>
 
       {gameStarted && !gameOver && (
-        <p className="text-white/60 text-sm mt-4">Use arrow keys to control the snake</p>
+        <div className="text-center mt-4">
+          <p className="text-white/60 text-xs sm:text-sm">Use arrow keys to control the snake</p>
+          {/* Mobile touch controls */}
+          <div className="mt-3 sm:hidden">
+            <div className="grid grid-cols-3 gap-2 w-32 mx-auto">
+              <div></div>
+              <button 
+                onTouchStart={() => gameRef.current.direction = {x: 0, y: -1}}
+                className="bg-white/20 p-3 rounded text-white text-xs"
+              >↑</button>
+              <div></div>
+              <button 
+                onTouchStart={() => gameRef.current.direction = {x: -1, y: 0}}
+                className="bg-white/20 p-3 rounded text-white text-xs"
+              >←</button>
+              <div></div>
+              <button 
+                onTouchStart={() => gameRef.current.direction = {x: 1, y: 0}}
+                className="bg-white/20 p-3 rounded text-white text-xs"
+              >→</button>
+              <div></div>
+              <button 
+                onTouchStart={() => gameRef.current.direction = {x: 0, y: 1}}
+                className="bg-white/20 p-3 rounded text-white text-xs"
+              >↓</button>
+              <div></div>
+            </div>
+          </div>
+        </div>
       )}
 
       {gameOver && (
@@ -332,8 +365,24 @@ const PongGame = ({ onClose }: { onClose: () => void }) => {
       gameRef.current.player.y = Math.max(0, Math.min(300, mouseY - 50));
     };
 
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!gameRef.current.running) return;
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      const touchY = touch.clientY - rect.top;
+      gameRef.current.player.y = Math.max(0, Math.min(300, touchY - 50));
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
   }, []);
 
   useEffect(() => {
@@ -344,10 +393,10 @@ const PongGame = ({ onClose }: { onClose: () => void }) => {
   }, [gameStarted, drawGame]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[500px] bg-black/90 rounded-lg p-6">
+    <div className="flex flex-col items-center justify-center min-h-[400px] sm:min-h-[500px] bg-black/90 rounded-lg p-4 sm:p-6 w-full max-w-3xl mx-auto">
       <div className="mb-4 text-center">
-        <h3 className="text-2xl font-bold text-blue-400 mb-2">🏓 PONG ULTIMATE</h3>
-        <div className="flex gap-8 text-white/80">
+        <h3 className="text-xl sm:text-2xl font-bold text-blue-400 mb-2">🏓 PONG ULTIMATE</h3>
+        <div className="flex gap-4 sm:gap-8 text-white/80 text-sm sm:text-base">
           <div>Player: {score.player}</div>
           <div>Computer: {score.computer}</div>
         </div>
@@ -357,14 +406,15 @@ const PongGame = ({ onClose }: { onClose: () => void }) => {
         ref={canvasRef}
         width={600}
         height={400}
-        className="border-2 border-blue-400 rounded-lg mb-4 cursor-none"
+        className="border-2 border-blue-400 rounded-lg mb-4 cursor-none w-full max-w-lg sm:max-w-xl h-auto"
+        style={{ aspectRatio: '3/2', maxWidth: '600px' }}
       />
 
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-xs sm:max-w-none">
         {!gameStarted ? (
           <button
             onClick={startGame}
-            className="px-6 py-3 bg-blue-500 hover:bg-blue-400 text-white font-bold rounded-lg transition-all duration-300"
+            className="px-4 sm:px-6 py-3 bg-blue-500 hover:bg-blue-400 text-white font-bold rounded-lg transition-all duration-300 text-sm sm:text-base w-full sm:w-auto"
           >
             START GAME
           </button>
@@ -372,14 +422,19 @@ const PongGame = ({ onClose }: { onClose: () => void }) => {
         
         <button
           onClick={onClose}
-          className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg transition-all duration-300"
+          className="px-4 sm:px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg transition-all duration-300 text-sm sm:text-base w-full sm:w-auto"
         >
           BACK TO ARCADE
         </button>
       </div>
 
       {gameStarted && (
-        <p className="text-white/60 text-sm mt-4">Move your mouse to control the left paddle</p>
+        <div className="text-center mt-4">
+          <p className="text-white/60 text-xs sm:text-sm">
+            <span className="hidden sm:inline">Move your mouse to control the left paddle</span>
+            <span className="sm:hidden">Touch and drag to control the paddle</span>
+          </p>
+        </div>
       )}
     </div>
   );
@@ -525,8 +580,24 @@ const BreakoutGame = ({ onClose }: { onClose: () => void }) => {
       gameRef.current.paddle.x = Math.max(0, Math.min(500, mouseX - 50));
     };
 
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!gameRef.current.running) return;
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      const touchX = touch.clientX - rect.left;
+      gameRef.current.paddle.x = Math.max(0, Math.min(500, touchX - 50));
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
   }, []);
 
   useEffect(() => {
@@ -537,10 +608,10 @@ const BreakoutGame = ({ onClose }: { onClose: () => void }) => {
   }, [gameStarted, drawGame]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[500px] bg-black/90 rounded-lg p-6">
+    <div className="flex flex-col items-center justify-center min-h-[400px] sm:min-h-[500px] bg-black/90 rounded-lg p-4 sm:p-6 w-full max-w-3xl mx-auto">
       <div className="mb-4 text-center">
-        <h3 className="text-2xl font-bold text-orange-400 mb-2">🧱 BREAKOUT REVOLUTION</h3>
-        <div className="flex gap-8 text-white/80">
+        <h3 className="text-xl sm:text-2xl font-bold text-orange-400 mb-2">🧱 BREAKOUT REVOLUTION</h3>
+        <div className="flex gap-4 sm:gap-8 text-white/80 text-sm sm:text-base">
           <div>Score: {score}</div>
           <div>Lives: {lives}</div>
         </div>
@@ -550,14 +621,15 @@ const BreakoutGame = ({ onClose }: { onClose: () => void }) => {
         ref={canvasRef}
         width={600}
         height={400}
-        className="border-2 border-orange-400 rounded-lg mb-4 cursor-none"
+        className="border-2 border-orange-400 rounded-lg mb-4 cursor-none w-full max-w-lg sm:max-w-xl h-auto"
+        style={{ aspectRatio: '3/2', maxWidth: '600px' }}
       />
 
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-xs sm:max-w-none">
         {!gameStarted || gameOver || gameWon ? (
           <button
             onClick={startGame}
-            className="px-6 py-3 bg-orange-500 hover:bg-orange-400 text-white font-bold rounded-lg transition-all duration-300"
+            className="px-4 sm:px-6 py-3 bg-orange-500 hover:bg-orange-400 text-white font-bold rounded-lg transition-all duration-300 text-sm sm:text-base w-full sm:w-auto"
           >
             {gameOver || gameWon ? 'PLAY AGAIN' : 'START GAME'}
           </button>
@@ -565,14 +637,19 @@ const BreakoutGame = ({ onClose }: { onClose: () => void }) => {
         
         <button
           onClick={onClose}
-          className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg transition-all duration-300"
+          className="px-4 sm:px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg transition-all duration-300 text-sm sm:text-base w-full sm:w-auto"
         >
           BACK TO ARCADE
         </button>
       </div>
 
       {gameStarted && !gameOver && !gameWon && (
-        <p className="text-white/60 text-sm mt-4">Move your mouse to control the paddle</p>
+        <div className="text-center mt-4">
+          <p className="text-white/60 text-xs sm:text-sm">
+            <span className="hidden sm:inline">Move your mouse to control the paddle</span>
+            <span className="sm:hidden">Touch and drag to control the paddle</span>
+          </p>
+        </div>
       )}
 
       {gameOver && (
@@ -657,23 +734,23 @@ const MemoryGame = ({ onClose }: { onClose: () => void }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[500px] bg-black/90 rounded-lg p-6">
-      <div className="mb-6 text-center">
-        <h3 className="text-2xl font-bold text-pink-400 mb-2">🧠 MEMORY MATRIX</h3>
-        <div className="text-white/80">
+    <div className="flex flex-col items-center justify-center min-h-[400px] sm:min-h-[500px] bg-black/90 rounded-lg p-4 sm:p-6 w-full max-w-2xl mx-auto">
+      <div className="mb-4 sm:mb-6 text-center">
+        <h3 className="text-xl sm:text-2xl font-bold text-pink-400 mb-2">🧠 MEMORY MATRIX</h3>
+        <div className="text-white/80 text-sm sm:text-base">
           <div>Score: {score}</div>
           <div>Round: {sequence.length}</div>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
         {colors.map((color, index) => (
           <button
             key={index}
             onClick={() => handleButtonClick(index)}
             disabled={isShowingSequence || gameOver}
             className={cn(
-              "w-32 h-32 rounded-lg transition-all duration-200 transform",
+              "w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-lg transition-all duration-200 transform",
               activeButton === index ? "scale-95 opacity-100" : "scale-100 opacity-70",
               "hover:scale-105 hover:opacity-100 disabled:hover:scale-100 disabled:hover:opacity-70"
             )}
@@ -689,11 +766,11 @@ const MemoryGame = ({ onClose }: { onClose: () => void }) => {
         ))}
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-xs sm:max-w-none">
         {!gameStarted || gameOver ? (
           <button
             onClick={startGame}
-            className="px-6 py-3 bg-pink-500 hover:bg-pink-400 text-white font-bold rounded-lg transition-all duration-300"
+            className="px-4 sm:px-6 py-3 bg-pink-500 hover:bg-pink-400 text-white font-bold rounded-lg transition-all duration-300 text-sm sm:text-base w-full sm:w-auto"
           >
             {gameOver ? 'PLAY AGAIN' : 'START GAME'}
           </button>
@@ -701,7 +778,7 @@ const MemoryGame = ({ onClose }: { onClose: () => void }) => {
         
         <button
           onClick={onClose}
-          className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg transition-all duration-300"
+          className="px-4 sm:px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg transition-all duration-300 text-sm sm:text-base w-full sm:w-auto"
         >
           BACK TO ARCADE
         </button>
@@ -753,30 +830,40 @@ export default function EmbeddedArcade() {
 
   // Konami Code Easter Egg
   useEffect(() => {
+    const konamiCodeSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+    
     const handleKeyPress = (e: KeyboardEvent) => {
       // For debugging purposes, let's create a visible indicator
-      const keyPressed = e.key.toLowerCase();
+      const keyPressed = e.code || e.key.toLowerCase();
       
       setKeySequence(prev => {
         const newSequence = [...prev, keyPressed];
         
-        // Check for simple "konami" typing (last 6 characters)
-        const lastSix = newSequence.slice(-6).join('');
+        // Check for proper Konami Code sequence (↑↑↓↓←→←→BA)
+        const lastTen = newSequence.slice(-10);
+        if (lastTen.length === 10 && 
+            lastTen.every((key, index) => key === konamiCodeSequence[index])) {
+          setKonamiActivated(true);
+          alert('🎉 KONAMI CODE ACTIVATED! 🎉\n\n🎮 You found the REAL secret code!\n\n⬆️⬆️⬇️⬇️⬅️➡️⬅️➡️🅱️🅰️\n\n🚀 Fun fact: I actually spent 3 hours implementing this easter egg instead of fixing that one CSS bug that\'s been bothering me for weeks! 😅\n\n☕ Coffee count today: ' + Math.floor(Math.random() * 12 + 1) + ' cups\n🐛 Bugs created while making this: Probably ' + Math.floor(Math.random() * 5 + 1) + '\n\n🎯 Pro tip: You can also just type "konami" for us lazy folks!');
+          return [];
+        }
         
+        // Check for simple "konami" typing (last 6 characters) - easier alternative
+        const lastSix = newSequence.slice(-6).join('').toLowerCase();
         if (lastSix === 'konami') {
           setKonamiActivated(true);
-          alert('🎉 KONAMI CODE ACTIVATED! 🎉\n\n🎮 You found the secret developer mode!\n\n🚀 Fun fact: I actually spent 3 hours implementing this easter egg instead of fixing that one CSS bug that\'s been bothering me for weeks! 😅\n\n☕ Coffee count today: ' + Math.floor(Math.random() * 12 + 1) + ' cups\n🐛 Bugs created while making this: Probably ' + Math.floor(Math.random() * 5 + 1));
+          alert('🎉 KONAMI CODE ACTIVATED! 🎉\n\n🎮 You found the secret developer mode!\n\n🚀 Fun fact: You took the easy route by typing "konami" instead of the full ↑↑↓↓←→←→BA sequence! 😄\n\n☕ Coffee count today: ' + Math.floor(Math.random() * 12 + 1) + ' cups\n🐛 Bugs created while making this: Probably ' + Math.floor(Math.random() * 5 + 1));
           return [];
         }
         
         // Alternative trigger - typing "test" will also activate for debugging
         if (lastSix.includes('test')) {
-          alert('🔧 DEBUG MODE: Test trigger activated! The Konami code system is working. Try typing "KONAMI" now!');
+          alert('🔧 DEBUG MODE: Test trigger activated! The Konami code system is working. Try the real sequence: ↑↑↓↓←→←→BA or just type "KONAMI"!');
           return [];
         }
         
-        // Keep only last 10 keys to prevent memory issues
-        return newSequence.slice(-10);
+        // Keep only last 15 keys to prevent memory issues and allow for full sequence
+        return newSequence.slice(-15);
       });
     };
 
@@ -932,11 +1019,11 @@ export default function EmbeddedArcade() {
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative z-10 text-center pt-28 pb-8"
+        className="relative z-10 text-center pt-20 sm:pt-24 md:pt-28 pb-6 md:pb-8 px-4"
       >
         {/* Personal title with gradient */}
         <motion.h1 
-          className="text-5xl md:text-7xl font-bold mb-4 relative cursor-pointer"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 relative cursor-pointer leading-tight"
           style={{
             background: `linear-gradient(45deg, #ff0080, #00ffff, #ff8000, #8000ff, #00ff00, #ff0080)`,
             backgroundSize: '400% 400%',
@@ -968,9 +1055,9 @@ export default function EmbeddedArcade() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="text-lg md:text-xl text-white/80 mb-4"
+          className="text-base sm:text-lg md:text-xl text-white/80 mb-4 px-2 leading-relaxed"
         >
-          📄 Bored browsing through my resume? 😴 Stop by and play some games! 🎮
+          📄 Bored browsing through my resume? 😴 <br className="sm:hidden" />Stop by and play some games! 🎮
         </motion.p>
 
         {/* Additional funny line with Konami code hint */}
@@ -978,7 +1065,7 @@ export default function EmbeddedArcade() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="text-sm md:text-base text-cyan-400/80 mb-2 font-mono"
+          className="text-xs sm:text-sm md:text-base text-cyan-400/80 mb-2 font-mono px-2 leading-relaxed"
         >
           // Because who needs a serious portfolio when you can have embedded arcade games? 🕹️
         </motion.p>
@@ -990,14 +1077,14 @@ export default function EmbeddedArcade() {
           transition={{ delay: 1.1 }}
           className="text-xs md:text-sm text-yellow-400/70 mb-8 font-mono bg-yellow-400/10 px-4 py-2 rounded-lg inline-block border border-yellow-400/20"
         >
-          🎯 <strong>SECRET CODE:</strong> Type "KONAMI" on your keyboard for a special surprise! 
+          🎯 <strong>SECRET CODE:</strong> Try the classic ↑↑↓↓←→←→BA sequence for a special surprise! 
           <br />
-          <span className="text-yellow-300/60">↑↑↓↓←→←→BA works too, but let's keep it simple �</span>
+          <span className="text-yellow-300/60">Or just type "KONAMI" if you're feeling lazy 😉</span>
         </motion.div>
 
         {/* Personal status indicators with easter eggs */}
         <motion.div
-          className="flex justify-center items-center gap-8 text-cyan-400 font-mono text-sm"
+          className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-6 md:gap-8 text-cyan-400 font-mono text-xs sm:text-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
@@ -1102,18 +1189,18 @@ export default function EmbeddedArcade() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-8 md:mb-12 px-4"
         >
           {/* Fun intro text */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="text-white/70 text-sm md:text-base mb-6 font-mono"
+            className="text-white/70 text-xs sm:text-sm md:text-base mb-4 md:mb-6 font-mono leading-relaxed max-w-2xl mx-auto"
           >
             🎯 <span className="text-cyan-400">Pro Tip:</span> These games are way more fun than reading technical skills on a resume! 
-            <br />
-            <span className="text-white/50">Plus, they actually demonstrate my coding abilities in action 😉</span>
+            <br className="hidden sm:block" />
+            <span className="text-white/50 block sm:inline mt-1 sm:mt-0">Plus, they actually demonstrate my coding abilities in action 😉</span>
           </motion.p>
 
           <motion.div
@@ -1143,9 +1230,9 @@ export default function EmbeddedArcade() {
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 max-w-7xl mx-auto"
           style={{
-            transform: `perspective(1200px) rotateX(${mousePosition.y * 2}deg) rotateY(${mousePosition.x * 2}deg)`,
+            transform: `perspective(1200px) rotateX(${mousePosition.y * 1}deg) rotateY(${mousePosition.x * 1}deg)`,
           }}
         >
           {EMBEDDED_GAMES.map((game, index) => (
@@ -1237,17 +1324,17 @@ export default function EmbeddedArcade() {
               <div className="absolute bottom-4 left-4 w-6 h-6 border-l-2 border-b-2 border-cyan-400/40"></div>
               <div className="absolute bottom-4 right-4 w-6 h-6 border-r-2 border-b-2 border-cyan-400/40"></div>
 
-              <div className="relative z-10 p-8">
+              <div className="relative z-10 p-4 sm:p-6 md:p-8">
                 {/* Game icon with advanced effects */}
                 <motion.div
-                  className="text-center mb-6 relative"
+                  className="text-center mb-4 md:mb-6 relative"
                   animate={{
                     rotateY: hoveredGame === game.id ? [0, 360] : 0,
                   }}
                   transition={{ duration: 2, ease: 'easeInOut' }}
                 >
                   <motion.div
-                    className="text-8xl relative z-10"
+                    className="text-6xl sm:text-7xl md:text-8xl relative z-10"
                     animate={{
                       scale: hoveredGame === game.id ? [1, 1.15, 1] : 1,
                       filter: hoveredGame === game.id 
@@ -1279,7 +1366,7 @@ export default function EmbeddedArcade() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 + 0.3 }}
                 >
-                  <h3 className="text-2xl font-bold text-white mb-3 text-center relative">
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 md:mb-3 text-center relative px-2">
                     {game.name}
                     <motion.div
                       className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 h-0.5"
@@ -1291,7 +1378,7 @@ export default function EmbeddedArcade() {
                     />
                   </h3>
                   
-                  <p className="text-white/70 mb-6 text-center text-sm leading-relaxed">
+                  <p className="text-white/70 mb-4 md:mb-6 text-center text-xs sm:text-sm leading-relaxed px-2">
                     {game.description}
                   </p>
                   
@@ -1320,16 +1407,16 @@ export default function EmbeddedArcade() {
                   )}
 
                   {/* Enhanced stats grid */}
-                  <div className="grid grid-cols-2 gap-3 mb-6">
+                  <div className="grid grid-cols-2 gap-2 sm:gap-3 mb-4 md:mb-6">
                     <motion.div 
-                      className="bg-black/30 backdrop-blur-sm rounded-xl p-3 text-center border border-white/10"
+                      className="bg-black/30 backdrop-blur-sm rounded-lg md:rounded-xl p-2 sm:p-3 text-center border border-white/10"
                       whileHover={{ 
                         backgroundColor: `${game.color}20`,
                         borderColor: `${game.color}40`,
                       }}
                     >
                       <div className="text-xs text-cyan-400 font-bold mb-1">DIFFICULTY</div>
-                      <div className="text-sm text-white font-semibold">{game.difficulty}</div>
+                      <div className="text-xs sm:text-sm text-white font-semibold truncate">{game.difficulty}</div>
                     </motion.div>
                     <motion.div 
                       className="bg-black/30 backdrop-blur-sm rounded-xl p-3 text-center border border-white/10"
@@ -1358,10 +1445,10 @@ export default function EmbeddedArcade() {
                     
                     <motion.button
                       whileHover={{ 
-                        scale: 1.05,
-                        boxShadow: `0 10px 30px ${game.color}40`,
+                        scale: 1.02,
+                        boxShadow: `0 5px 20px ${game.color}40`,
                       }}
-                      whileTap={{ scale: 0.95 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={(e) => {
                         e.stopPropagation();
                         setSelectedGame(game.id);
@@ -1378,7 +1465,7 @@ export default function EmbeddedArcade() {
                           return newCount;
                         });
                       }}
-                      className="w-full text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 text-lg relative overflow-hidden border-2"
+                      className="w-full text-white font-bold py-3 sm:py-4 px-4 sm:px-6 rounded-lg md:rounded-xl transition-all duration-300 text-sm sm:text-base md:text-lg relative overflow-hidden border-2"
                       style={{
                         background: `linear-gradient(135deg, ${game.color}, ${game.color}80)`,
                         borderColor: `${game.color}60`,
@@ -1453,7 +1540,7 @@ export default function EmbeddedArcade() {
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.2, type: "spring", stiffness: 100 }}
-        className="relative z-10 text-center pb-12"
+        className="relative z-10 text-center pb-8 md:pb-12 px-4"
       >
         {/* Portal ring background */}
         <div className="relative inline-block">
@@ -1518,7 +1605,7 @@ export default function EmbeddedArcade() {
           >
             <Link 
               href="/" 
-              className="relative inline-flex items-center gap-4 px-10 py-5 rounded-2xl font-bold text-xl text-white border-2 border-cyan-400/50 overflow-hidden group transition-all duration-500"
+              className="relative inline-flex items-center gap-2 sm:gap-4 px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 rounded-xl md:rounded-2xl font-bold text-sm sm:text-base md:text-lg lg:text-xl text-white border-2 border-cyan-400/50 overflow-hidden group transition-all duration-500"
               style={{
                 background: `
                   linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1)),
@@ -1576,18 +1663,18 @@ export default function EmbeddedArcade() {
 
         {/* Navigation tip */}
         <motion.div
-          className="mt-6 text-center"
+          className="mt-4 md:mt-6 text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.6 }}
         >
           <motion.p
-            className="text-white/60 text-sm font-mono bg-purple-900/20 px-4 py-2 rounded-lg inline-block border border-purple-400/20"
+            className="text-white/60 text-xs sm:text-sm font-mono bg-purple-900/20 px-3 sm:px-4 py-2 sm:py-3 rounded-lg inline-block border border-purple-400/20 max-w-sm sm:max-w-md md:max-w-2xl mx-auto leading-relaxed"
             whileHover={{ scale: 1.02, backgroundColor: 'rgba(147, 51, 234, 0.3)' }}
           >
             🧭 <span className="text-purple-300">Navigation Tip:</span> Head back to my portfolio to see the "boring" stuff like skills, projects & contact info 
-            <br />
-            <span className="text-white/40">But honestly, these games probably show my coding skills better than any resume bullet point! 😄</span>
+            <br className="hidden sm:block" />
+            <span className="text-white/40 block sm:inline mt-1 sm:mt-0">But honestly, these games probably show my coding skills better than any resume bullet point! 😄</span>
           </motion.p>
         </motion.div>
 
